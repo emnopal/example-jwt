@@ -1,0 +1,19 @@
+{
+    "name": "badhabit/jwt-login-management",
+    "description": "REST API Login Management using JSON Web Token",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Badhabit\\JwtLoginManagement\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Muhammad Naufal",
+            "email": "mnaufal0999@gmail.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "v5.5.1"
+    }
+}
