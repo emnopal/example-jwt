@@ -1,10 +1,10 @@
 {
-    "name": "badhabit/jwt-login-management",
-    "description": "REST API Login Management using JSON Web Token",
+    "name": "badhabit/simple-jwt",
+    "description": "Example of Simple JWT Auth with PHP Native",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Badhabit\\JwtLoginManagement\\": "src/"
+            "Badhabit\\SimpleJWT\\": "src/"
         }
     },
     "authors": [

@@ -1,6 +1,6 @@
 <?php
 
-namespace Badhabit\JwtLoginManagement\Auth;
+namespace Badhabit\SimpleJWT\Auth;
 
 class Service
 {
