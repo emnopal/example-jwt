@@ -19,14 +19,14 @@ class Handler
     protected int|float $expireAt;
     protected string $jwt;
 
-    public function __construct()
+    public function __construct(int|float $validity_time = (60*60))
     {
         // set default timezone
         date_default_timezone_set("Asia/Jakarta");
         $this->issuedAt = time();
 
-        // token validity for 1 hour
-        $this->expireAt = $this->issuedAt + (60 * 60);
+        // token validity default for 1 hour
+        $this->expireAt = $this->issuedAt + $validity_time;
 
         // set signature
         $this->jwt_secret = 'secret';
@@ -43,6 +43,14 @@ class Handler
 
     public function encode(string $iss, array $data): array|string
     {
+
+        /*
+         * CAUTION:
+         * Never store any credential or
+         * sensitive information in the JWT
+         * because it can be decoded by anyone
+         * */
+
         $this->token = [
             // identifier to the token (who issued the token)
             'iss' => $iss,
