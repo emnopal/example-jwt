@@ -1,6 +1,6 @@
 <?php
 
-namespace Badhabit\SimpleJWT\Auth;
+namespace Badhabit\JwtLoginManagement\Auth;
 
 class Service
 {
@@ -41,23 +41,25 @@ class Service
 
     public function encodeValidate(array $json): array
     {
+        /*
+         * Never stored password in jwt
+         * because everyone can decode it easily
+         *
+         * */
+
         if (!isset($json['username']) || $json['username'] == null) {
             throw new \Exception('Username is required');
-        }
-        if (!isset($json['password']) || $json['password'] == null) {
-            throw new \Exception('Password is required');
         }
         if (!isset($json['email']) || $json['email'] == null ||
             !filter_var($json['email'], FILTER_VALIDATE_EMAIL)) {
             throw new \Exception('Email is required');
         }
-        if (in_array($json['username'], $json) &&
-            in_array($json['password'], $json) &&
-            in_array($json['email'], $json)) {
-            return $json;
-        } else {
-            throw new \Exception('Body contains invalid fields');
+        if (isset($json['token']) || isset($json['password'])) {
+            throw new \Exception(
+                'Token and password is not allowed here, never store any sensitive information here'
+            );
         }
+        return $json;
     }
 
     public function decode(array $data): array
