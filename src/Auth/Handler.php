@@ -1,9 +1,10 @@
 <?php
 
-namespace Badhabit\JwtLoginManagement\Auth;
+namespace Badhabit\SimpleJWT\Auth;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
+use Badhabit\SimpleJWT\Helper\DotEnv;
 use Firebase\JWT\JWT;
 
 class Handler
@@ -21,6 +22,7 @@ class Handler
 
     public function __construct(int|float $validity_time = (60*60))
     {
+
         // set default timezone
         date_default_timezone_set("Asia/Jakarta");
         $this->issuedAt = time();
@@ -28,8 +30,21 @@ class Handler
         // token validity default for 1 hour
         $this->expireAt = $this->issuedAt + $validity_time;
 
-        // set signature
-        $this->jwt_secret = 'secret';
+        /*
+         * make sure your jwt_secret
+         * is secure and make sure people
+         * hard to guess or brute force
+         * do not use key 'secret' in production
+         * use a random string or hash of your jwt_secret
+         * */
+
+        // initialize the secret key on the dotenv file
+        $dotenv = new DotEnv(__DIR__ . "/../../.env");
+        $dotenv->load();
+
+        // Set signature
+        $this->jwt_secret = getenv('JWT_SECRET');
+
     }
 
     public static function readableTimestamp(float|int|string $timestamp): string
