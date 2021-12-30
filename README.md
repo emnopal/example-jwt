@@ -8,4 +8,4 @@ With Login Management: <br>
 
 <br>
 
-Without Login Management: [simple-jwt](https://github.com/emnopal/example-jwt/tree/simple-jwt) Branch <br>
+Without Login Management: [simple-jwt](https://github.com/emnopal/example-jwt/tree/simple-jwt) <br>
