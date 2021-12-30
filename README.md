@@ -3,8 +3,8 @@
 Simple usage of JSON Web Token (JWT)<br><br>
 
 With Login Management: <br>
-  1. [php-jwt-login-management](https://github.com/emnopal/php-jwt-user-management)<br>
-  2. Coming Soon
+  1. Login Register Webpage: [php-jwt-login-management](https://github.com/emnopal/php-jwt-user-management)<br>
+  2. Login Register REST API: Coming Soon
 
 <br>
 
