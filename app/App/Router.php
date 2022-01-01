@@ -1,6 +1,6 @@
 <?php
 
-namespace Badhabit\JwtLoginManagement\Auth;
+namespace Badhabit\JwtLoginManagement\App;
 
 class Router
 {

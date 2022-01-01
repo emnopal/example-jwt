@@ -1,6 +1,9 @@
 <?php
 
-namespace Badhabit\JwtLoginManagement\Auth;
+namespace Badhabit\JwtLoginManagement\Controller;
+
+use Badhabit\JwtLoginManagement\Auth\Handler;
+use Badhabit\JwtLoginManagement\Service\Service;
 
 class Controller
 {

@@ -1,6 +1,8 @@
 <?php
 
-namespace Badhabit\JwtLoginManagement\Auth;
+namespace Badhabit\JwtLoginManagement\Service;
+
+use Badhabit\JwtLoginManagement\Auth\Handler;
 
 class Service
 {

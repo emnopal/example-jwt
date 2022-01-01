@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Badhabit\JwtLoginManagement\Auth\Controller;
-use Badhabit\JwtLoginManagement\Auth\Router;
+use Badhabit\JwtLoginManagement\App\Router;
+use Badhabit\JwtLoginManagement\Controller\Controller;
 
 Router::add('POST', '/api/auth/', Controller::class, 'encode');
 Router::add('POST', '/api/decode/', Controller::class, 'decode');
