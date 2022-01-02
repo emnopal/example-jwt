@@ -1,8 +1,12 @@
 <?php
 
+<<<<<<< HEAD:src/Auth/Router.php
 namespace Badhabit\SimpleJWT\Auth;
+=======
+namespace Badhabit\JwtLoginManagement\App;
+>>>>>>> jwt-auth-db:app/App/Route.php
 
-class Router
+class Route
 {
 
     private static array $routes = [];
@@ -45,8 +49,8 @@ class Router
         }
         $token_json = [
             'status' => [
-                'code' => "405 or 404",
-                'message' => 'Method Not Allowed or Link not found'
+                'code' => "404",
+                'message' => 'Link not found'
             ]
         ];
         echo json_encode($token_json);

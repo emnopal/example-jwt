@@ -1,19 +1,19 @@
 {
-    "name": "badhabit/simple-jwt",
-    "description": "Example of Simple JWT Auth with PHP Native",
-    "type": "project",
-    "autoload": {
-        "psr-4": {
-            "Badhabit\\SimpleJWT\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Muhammad Naufal",
-            "email": "mnaufal0999@gmail.com"
-        }
-    ],
-    "require": {
-        "firebase/php-jwt": "v5.5.1"
+  "name": "badhabit/simple-jwt",
+  "description": "Example of Simple JWT Auth with PHP Native",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Badhabit\\JwtLoginManagement\\": "app/"
     }
+  },
+  "authors": [
+    {
+      "name": "Muhammad Naufal",
+      "email": "mnaufal0999@gmail.com"
+    }
+  ],
+  "require": {
+    "firebase/php-jwt": "v5.5.1"
+  }
 }
