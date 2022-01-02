@@ -1,10 +1,6 @@
 <?php
 
-<<<<<<< HEAD:src/Auth/Router.php
-namespace Badhabit\SimpleJWT\Auth;
-=======
 namespace Badhabit\JwtLoginManagement\App;
->>>>>>> jwt-auth-db:app/App/Route.php
 
 class Route
 {
