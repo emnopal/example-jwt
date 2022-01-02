@@ -2,33 +2,37 @@
 
 namespace Badhabit\JwtLoginManagement\Service;
 
-use Badhabit\JwtLoginManagement\Auth\Handler;
+use Badhabit\JwtLoginManagement\Domain\Decode;
+use Badhabit\JwtLoginManagement\Domain\UserSession;
+use Badhabit\JwtLoginManagement\Helper\TimeStampConv;
+use Badhabit\JwtLoginManagement\Repository\SessionRepository;
 
-class Service
+class SessionService
 {
 
-    private Handler $handler;
+    private SessionRepository $sessionRepository;
 
-    public function __construct(Handler $handler)
+    public function __construct(SessionRepository $sessionRepository)
     {
-        $this->handler = $handler;
+        $this->sessionRepository = $sessionRepository;
     }
 
-    public function encode(array $data, ?string $url=null): array
+    public function encode(UserSession $userSession): array
     {
-        if (is_null($url)) {
-            $url = $_SERVER['PATH_INFO'];
-        }
         try{
-            $validated = $this->encodeValidate($data);
-            $token = $this->handler->encode($url, $validated);
+            $this->encodeValidate($userSession);
+            $token = $this->sessionRepository->getToken($userSession);
             return [
                 'status' => [
                     'code' => 200,
                     'message' => 'Success'
                 ],
-                'data' => [
-                    'token' => $token
+                'encoded_data' => [
+                    'token_issued_timestamp' => $token->issuedAt,
+                    'token_issued' => TimeStampConv::readableTimestamp($token->issuedAt),
+                    'token_expires_timestamp' => $token->expireAt,
+                    'token_expires' => TimeStampConv::readableTimestamp($token->expireAt),
+                    'token' => $token->key,
                 ]
             ];
         } catch (\Exception $e) {
@@ -41,41 +45,33 @@ class Service
         }
     }
 
-    public function encodeValidate(array $json): array
+    private function encodeValidate(UserSession $userSession): void
     {
-        /*
-         * Never stored password in jwt
-         * because everyone can decode it easily
-         *
-         * */
-
-        if (!isset($json['username']) || $json['username'] == null) {
+        if (!isset($userSession->username) || $userSession->username == null) {
             throw new \Exception('Username is required');
-        }
-        if (!isset($json['email']) || $json['email'] == null ||
-            !filter_var($json['email'], FILTER_VALIDATE_EMAIL)) {
+        } else if (!isset($userSession->email) || $userSession->email == null ||
+            !filter_var($userSession->email, FILTER_VALIDATE_EMAIL)) {
             throw new \Exception('Email is required');
         }
-        if (isset($json['token']) || isset($json['password'])) {
-            throw new \Exception(
-                'Token and password is not allowed here, never store any sensitive information here'
-            );
-        }
-        return $json;
     }
 
-    public function decode(array $data): array
+    public function decode(Decode $decode): array
     {
         try{
-            $validated = $this->decodeValidate($data);
-            $token = $this->handler->decode($validated['token']);
+            $this->decodeValidate($decode);
+            $token = $this->sessionRepository->decodeToken($decode);
             return [
                 'status' => [
                     'code' => 200,
                     'message' => 'Success'
                 ],
-                'data' => [
-                    'token' => $token
+                'token_data' => [
+                    'who_issued' => $token->payload->iss,
+                    'issued_timestamp' => $token->payload->iat,
+                    'issued' => TimeStampConv::readableTimestamp($token->payload->iat),
+                    'expires_timestamp' => $token->payload->exp,
+                    'expires' => TimeStampConv::readableTimestamp($token->payload->exp),
+                    'data' => $token->payload->data
                 ]
             ];
         } catch (\Exception $e) {
@@ -88,15 +84,10 @@ class Service
         }
     }
 
-    public function decodeValidate(array $json): array
+    public function decodeValidate(Decode $decode): void
     {
-        if (!isset($json['token']) || $json['token'] == null) {
+        if (!isset($decode->token) || $decode->token == null) {
             throw new \Exception('Token is required');
-        }
-        if (in_array($json['token'], $json)) {
-            return $json;
-        } else {
-            throw new \Exception('Body contains invalid fields');
         }
     }
 

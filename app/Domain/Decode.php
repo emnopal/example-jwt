@@ -2,7 +2,7 @@
 
 namespace Badhabit\JwtLoginManagement\Domain;
 
-class Decoded
+class Decode
 {
-    public object $payload;
+    public string $token;
 }

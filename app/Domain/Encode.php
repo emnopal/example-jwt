@@ -5,5 +5,5 @@ namespace Badhabit\JwtLoginManagement\Domain;
 class Encode
 {
     public string $iss;
-    public Decoded $data;
+    public UserSession $userSession;
 }

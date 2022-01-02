@@ -3,32 +3,46 @@
 namespace Badhabit\JwtLoginManagement\Controller;
 
 use Badhabit\JwtLoginManagement\Auth\Handler;
-use Badhabit\JwtLoginManagement\Service\Service;
+use Badhabit\JwtLoginManagement\Domain\Decode;
+use Badhabit\JwtLoginManagement\Domain\UserSession;
+use Badhabit\JwtLoginManagement\Repository\SessionRepository;
+use Badhabit\JwtLoginManagement\Service\SessionService;
 
-class Controller
+class SessionController
 {
 
     private Handler $handler;
-    private Service $jwt;
+    private SessionService $sessionService;
     private string|false $input_raw;
     private array $input;
+    private SessionRepository $sessionRepository;
 
     public function __construct()
     {
         $this->handler = new Handler();
-        $this->jwt = new Service($this->handler);
+        $this->sessionRepository = new SessionRepository($this->handler);
+        $this->sessionService = new SessionService($this->sessionRepository);
         $this->input_raw = file_get_contents('php://input');
         $this->input = (array)json_decode($this->input_raw);
     }
 
-    public function decode()
+    public function encoded()
     {
-        echo json_encode($this->jwt->decode($this->input));
+        $userSession = new UserSession();
+        $userSession->username = $this->input['username'];
+        $userSession->email = $this->input['email'];
+
+        echo json_encode($this->sessionService->encode($userSession));
     }
 
-    public function encode()
+    public function decoded()
     {
-        echo json_encode($this->jwt->encode($this->input));
+        $decode = new Decode();
+        $decode->token = $this->input['token'];
+
+        echo json_encode($this->sessionService->decode($decode));
     }
+
+
 
 }

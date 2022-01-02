@@ -1,11 +1,13 @@
 <?php
 
-namespace Badhabit\JwtLoginManagement\Domain;
+namespace Badhabit\JwtLoginManagement\Model;
 
-class Session
+use Badhabit\JwtLoginManagement\Domain\Encode;
+
+class EncodedSession
 {
     public string $key;
-    public string $issued;
-    public string $expires;
+    public string $issuedAt;
+    public string $expireAt;
     public Encode $data;
 }

@@ -2,14 +2,14 @@
 
 namespace Badhabit\JwtLoginManagement\Auth;
 
-use BadHabit\JwtLoginManagement\Model\DecodeSession;
-use BadHabit\JwtLoginManagement\Domain\Decoded;
-use BadHabit\JwtLoginManagement\Domain\Encode;
-use BadHabit\JwtLoginManagement\Model\EncodeSession;
-use BadHabit\JwtLoginManagement\Helper\DotEnv;
+use Badhabit\JwtLoginManagement\Domain\Decode;
+use Badhabit\JwtLoginManagement\Domain\Encode;
+use Badhabit\JwtLoginManagement\Helper\DotEnv;
+use Badhabit\JwtLoginManagement\Model\DecodedSession;
+use Badhabit\JwtLoginManagement\Model\EncodedSession;
 use Firebase\JWT\JWT;
 
-class SessionRepository
+class Handler
 {
     /**
      * Handling all the JWT actions
@@ -51,7 +51,7 @@ class SessionRepository
 
     }
 
-    public function encode(Encode $encode): EncodeSession
+    public function encode(Encode $encode): EncodedSession
     {
 
         /*
@@ -73,24 +73,26 @@ class SessionRepository
             'exp' => $this->expireAt,
 
             // payload
-            'data' => $encode->data
+            'data' => $encode->userSession
         ];
 
         $this->jwt = JWT::encode($this->token, $this->jwt_secret);
-        $encodeSession = new EncodeSession();
-        $encodeSession->key = $this->jwt;
-        $encodeSession->expires = $this->expireAt;
-        $encodeSession->issued = $this->issuedAt;
-        $encodeSession->data = $encode->data;
-        return $encodeSession;
+
+        $encodedSession = new EncodedSession();
+        $encodedSession->key = $this->jwt;
+        $encodedSession->expireAt = $this->expireAt;
+        $encodedSession->issuedAt = $this->issuedAt;
+        $encodedSession->data = $encode;
+
+        return $encodedSession;
     }
 
-    public function decode(DecodeSession $decode): Decoded
+    public function decode(Decode $session): DecodedSession
     {
-        $decode = JWT::decode($decode->token, $this->jwt_secret, ['HS256']);
-        $decodeSession = new Decoded();
-        $decodeSession->username = $decode->data->username;
-        $decodeSession->email = $decode->data->email;
+        $decode = JWT::decode($session->token, $this->jwt_secret, ['HS256']);
+        $decodeSession = new DecodedSession();
+        $decodeSession->payload = $decode;
+
         return $decodeSession;
     }
 }
