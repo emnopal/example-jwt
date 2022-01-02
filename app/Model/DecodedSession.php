@@ -2,7 +2,7 @@
 
 namespace Badhabit\JwtLoginManagement\Model;
 
-class DecodeSession
+class DecodedSession
 {
-    public string $token;
+
 }

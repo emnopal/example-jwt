@@ -43,12 +43,13 @@ class Router
                 return;
             }
         }
-        $token_json = [
-            'status' => [
-                'code' => "405 or 404",
-                'message' => 'Method Not Allowed or Link not found'
-            ]
-        ];
-        echo json_encode($token_json);
+//        $token_json = [
+//            'status' => [
+//                'code' => "405 or 404",
+//                'message' => 'Method Not Allowed or Link not found'
+//            ]
+//        ];
+//        echo json_encode($token_json);
+        throw new \Exception('Method Not Allowed or Link not found');
     }
 }

@@ -2,10 +2,10 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Badhabit\JwtLoginManagement\App\Router;
-use Badhabit\JwtLoginManagement\Controller\Controller;
+use Badhabit\JwtLoginManagement\App\Route;
+use Badhabit\JwtLoginManagement\Controller\SessionController;
 
-Router::add('POST', '/api/auth/', Controller::class, 'encode');
-Router::add('POST', '/api/decode/', Controller::class, 'decode');
+Route::add('POST', '/api/auth/', SessionController::class, 'encoded');
+Route::add('POST', '/api/decode/', SessionController::class, 'decoded');
 
-Router::run();
+Route::run();

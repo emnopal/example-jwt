@@ -9,7 +9,7 @@ use BadHabit\JwtLoginManagement\Model\EncodeSession;
 use BadHabit\JwtLoginManagement\Helper\DotEnv;
 use Firebase\JWT\JWT;
 
-class Handler
+class SessionRepository
 {
     /**
      * Handling all the JWT actions
@@ -89,8 +89,8 @@ class Handler
     {
         $decode = JWT::decode($decode->token, $this->jwt_secret, ['HS256']);
         $decodeSession = new Decoded();
-        $decodeSession->user_id = $decode->data->user_id;
-        $decodeSession->role = $decode->data->role;
+        $decodeSession->username = $decode->data->username;
+        $decodeSession->email = $decode->data->email;
         return $decodeSession;
     }
 }
