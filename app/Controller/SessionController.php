@@ -28,21 +28,47 @@ class SessionController
 
     public function encoded()
     {
-        $userSession = new UserSession();
-        $userSession->username = $this->input['username'];
-        $userSession->email = $this->input['email'];
+        try {
+            if (!isset($this->input['username']) ||
+                !isset($this->input['email'])) {
+                throw new \Exception();
+            }
 
-        echo json_encode($this->sessionService->encode($userSession));
+            $userSession = new UserSession();
+            $userSession->username = $this->input['username'];
+            $userSession->email = $this->input['email'];
+
+            echo json_encode($this->sessionService->encode($userSession));
+        } catch (\Exception|\TypeError) {
+
+            echo json_encode([
+                "status" => [
+                    "code" => 500,
+                    "message" => "Require username or email"
+                ],
+            ]);
+        }
     }
 
     public function decoded()
     {
-        $decode = new Decode();
-        $decode->token = $this->input['token'];
+        try {
+            if (!isset($this->input['token'])) {
+                throw new \Exception();
+            }
 
-        echo json_encode($this->sessionService->decode($decode));
+            $decode = new Decode();
+            $decode->token = $this->input['token'];
+
+            echo json_encode($this->sessionService->decode($decode));
+        } catch (\Exception|\TypeError $e) {
+
+            echo json_encode([
+                "status" => [
+                    "code" => 500,
+                    "message" => "Require username or email"
+                ],
+            ]);
+        }
     }
-
-
-
 }

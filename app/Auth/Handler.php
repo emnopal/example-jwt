@@ -7,7 +7,10 @@ use Badhabit\JwtLoginManagement\Domain\Encode;
 use Badhabit\JwtLoginManagement\Helper\DotEnv;
 use Badhabit\JwtLoginManagement\Model\DecodedSession;
 use Badhabit\JwtLoginManagement\Model\EncodedSession;
+use Firebase\JWT\BeforeValidException;
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
+use Firebase\JWT\SignatureInvalidException;
 
 class Handler
 {
@@ -87,12 +90,25 @@ class Handler
         return $encodedSession;
     }
 
-    public function decode(Decode $session): DecodedSession
+    public function decode(Decode $decode): DecodedSession
     {
-        $decode = JWT::decode($session->token, $this->jwt_secret, ['HS256']);
-        $decodeSession = new DecodedSession();
-        $decodeSession->payload = $decode;
+        try {
+            $decoded = JWT::decode($decode->token, $this->jwt_secret, ['HS256']);
+            $decodedSession = new DecodedSession();
+            $decodedSession->payload = $decoded;
 
-        return $decodeSession;
+            return $decodedSession;
+        } catch (ExpiredException $e) {
+            throw new ExpiredException($e->getMessage());
+        } catch (SignatureInvalidException|BeforeValidException $e) {
+            throw new \Exception($e->getMessage());
+        } catch (\DomainException $e) {
+            throw new \DomainException($e->getMessage());
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException($e->getMessage());
+        } catch (\UnexpectedValueException $e) {
+            throw new \UnexpectedValueException($e->getMessage());
+        }
+
     }
 }
